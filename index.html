@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ABG Bible V4</title>
+  <meta name="theme-color" content="#160b0f">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🍒</span>
+      <h1>ABG Bible <span class="v4">V4</span></h1>
+    </div>
+    <div class="right">
+      <span id="proBadge" class="badge" hidden>Enhanced Variants</span>
+      <button id="showIntro" class="ghost">Intro</button>
+      <button id="openSettings" class="ghost">Settings</button>
+    </div>
+  </header>
+
+  <!-- Bottom nav -->
+  <nav class="bottomnav">
+    <button class="nav-btn active" data-tab="plan">Plan</button>
+    <button class="nav-btn" data-tab="find">Find</button>
+    <button class="nav-btn" data-tab="bag">Bag</button>
+    <button class="nav-btn" data-tab="saved">Saved</button>
+  </nav>
+
+  <main>
+    <!-- PLAN -->
+    <section id="plan" class="tab active">
+      <div class="goal-banner card">
+        <div class="goal-lines">
+          <div><strong>Objective:</strong> <span id="goalPrimary">Leave with a plan tonight.</span></div>
+          <div class="small"><strong>Alt:</strong> <span id="goalAlt">10–15 late-food now</span> • <strong>Out:</strong> <span id="goalOut">Swap IG + 2 windows</span></div>
+          <div class="small"><strong>Timebox:</strong> ≤ <span id="goalTimebox">90</span> min • <strong>Rails:</strong> If “later” → use Alt; if “no” → exit clean.</div>
+        </div>
+        <div class="outcome-chips">
+          <button class="chip chip-active" data-outcome="set_date">Lock the date</button>
+          <button class="chip" data-outcome="pull_now">Borrow 10–15 now</button>
+          <button class="chip" data-outcome="vibe">Keep the vibe</button>
+        </div>
+      </div>
+
+      <div class="nba card">
+        <span class="small dim">Next move</span>
+        <div id="nbaText">Pick options and build the plan.</div>
+        <div class="nba-actions">
+          <button id="nbaCopy" class="chip">Copy</button>
+        </div>
+      </div>
+
+      <div class="controls card">
+        <div class="row">
+          <div class="field"><label>Channel</label>
+            <select id="channel"><option value="IRL" selected>IRL</option><option value="Virtual">Virtual</option></select>
+          </div>
+          <div class="field"><label>Archetype</label><select id="archetype"></select></div>
+          <div class="field" id="venue-field"><label>Venue</label><select id="venue"></select></div>
+          <div class="field" id="platform-field" hidden><label>Platform</label><select id="platform"></select></div>
+          <div class="field"><label>City</label><select id="city"></select></div>
+          <div class="field"><label>Time</label>
+            <select id="timeOfDay"><option value="day">Day</option><option value="evening" selected>Evening</option><option value="late_night">Late Night</option></select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field"><label>Interest</label>
+            <select id="interest"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select>
+          </div>
+          <div class="field"><label>Party size (her)</label>
+            <div class="chipbar" id="partySize">
+              <button class="chip chip-active" data-val="solo">Solo</button>
+              <button class="chip" data-val="pair">1–2</button>
+              <button class="chip" data-val="crew">Crew (4+)</button>
+            </div>
+          </div>
+          <div class="field"><label>Variant width</label>
+            <input id="variantRange" type="range" min="0" max="1" step="0.05" value="0.4">
+            <div class="small dim">Conservative ↔ Wild</div>
+          </div>
+        </div>
+
+        <details class="advanced">
+          <summary>Advanced</summary>
+          <div class="row">
+            <div class="field"><label>Mode</label>
+              <select id="mode"><option value="safe">Safe</option><option value="normal" selected>Normal</option><option value="spicy">Spicy</option></select>
+            </div>
+            <div class="field"><label>Goal</label>
+              <select id="goal"><option value="set_date" selected>Set date</option><option value="pull_now">Pull now</option><option value="vibe">Keep vibe</option></select>
+            </div>
+            <div class="field"><label>Line Tone</label>
+              <select id="tone"><option value="classy">Classy</option><option value="flirty" selected>Flirty</option><option value="suggestive">Suggestive</option></select>
+            </div>
+            <div class="field"><label>Ethnicity Context (optional)</label>
+              <select id="ethnicity"><option value="">(none)</option></select>
+            </div>
+            <div class="switches">
+              <label class="switch"><input type="checkbox" id="includeEth"><span>Include Ethnicity Notes</span></label>
+              <label class="switch"><input type="checkbox" id="edgy"><span>Edgy Mode</span></label>
+            </div>
+          </div>
+          <div class="row sliders">
+            <div class="field"><label>Talky ↔ Action</label><input id="slTalky" type="range" min="0" max="1" step="0.05" value="0.5"></div>
+            <div class="field"><label>Playful ↔ Classy</label><input id="slPlayful" type="range" min="0" max="1" step="0.05" value="0.6"></div>
+            <div class="field"><label>Direct ↔ Warm</label><input id="slDirect" type="range" min="0" max="1" step="0.05" value="0.5"></div>
+          </div>
+          <div class="profiles">
+            <button class="chip" data-profile="club_pull">Club Pull</button>
+            <button class="chip" data-profile="chill_date">Chill Date</button>
+            <button class="chip" data-profile="late_food">Late Food Reset</button>
+            <button class="chip" data-profile="day_date">Day-Date</button>
+          </div>
+        </details>
+
+        <div id="thermo" class="thermo">
+          <div class="bar"><div id="thermoFill"></div></div>
+          <span id="thermoLabel" class="small dim">Risk: vibing</span>
+        </div>
+
+        <div class="actions">
+          <button id="generate">Build the plan</button>
+          <button id="shuffle">New angle</button>
+          <button id="copy">Copy plan</button>
+          <button id="save">Save plan</button>
+          <button id="viewSaved">Saved</button>
+        </div>
+      </div>
+
+      <article id="output" class="card"><div class="placeholder">Choose options and hit <b>Build the plan</b>.</div></article>
+
+      <div class="feedback card" id="feedbackBox" hidden>
+        <div class="row">
+          <div class="field"><label>How did it feel?</label>
+            <div class="chipbar">
+              <button class="chip" data-fb="meh">Meh</button>
+              <button class="chip" data-fb="good">Good</button>
+              <button class="chip" data-fb="great">Great</button>
+            </div>
+          </div>
+          <div class="field"><label>Signals (live)</label>
+            <div class="chipbar">
+              <button class="chip" data-sig="green">🟢</button>
+              <button class="chip" data-sig="yellow">🟡</button>
+              <button class="chip" data-sig="red">🔴</button>
+            </div>
+          </div>
+        </div>
+        <div class="small dim">Learns locally and re-scores next beats.</div>
+      </div>
+
+      <!-- Reroll Drawer -->
+      <dialog id="rerollDialog">
+        <h3>More options</h3>
+        <div id="rerollList"></div>
+        <div class="dialog-actions">
+          <button id="closeReroll">Close</button>
+        </div>
+      </dialog>
+
+      <!-- Field Kit -->
+      <button id="fieldKitBtn" class="fab">🧰</button>
+      <dialog id="fieldKit">
+        <h3>Field Kit</h3>
+        <div class="tabs-mini">
+          <button class="mini active" data-kit="momentum">Momentum</button>
+          <button class="mini" data-kit="pivots">Pivots</button>
+          <button class="mini" data-kit="closers">Closers</button>
+        </div>
+        <div id="kitContent"></div>
+        <div class="dialog-actions">
+          <button id="closeKit">Close</button>
+        </div>
+      </dialog>
+    </section>
+
+    <!-- FIND -->
+    <section id="find" class="tab">
+      <article class="doc">
+        <h2>How to Find</h2>
+        <div class="chipbar" id="findFilters">
+          <button class="chip" data-filter="low_noise">Low noise</button>
+          <button class="chip" data-filter="photo">Photo-friendly</button>
+          <button class="chip" data-filter="open_late">Open late</button>
+          <button class="chip" data-filter="walkable">Walkable</button>
+          <button class="chip" data-filter="food_pivot">Food pivot</button>
+        </div>
+        <div id="discover-list"></div>
+        <h2 style="margin-top:24px">Dirty Dozen (Edgy Pack)</h2>
+        <div id="dirty-list"></div>
+      </article>
+    </section>
+
+    <!-- BAG -->
+    <section id="bag" class="tab">
+      <article class="doc">
+        <h2>How to Bag (Mini Playbooks)</h2>
+        <div id="playbooks"></div>
+        <h3>Signals → Moves</h3>
+        <div class="grid-2">
+          <div>
+            <h4>IRL</h4>
+            <h5>⚪ Baseline</h5><ul id="signals-irl-baseline"></ul>
+            <h5>🟢 Green</h5><ul id="signals-irl-green"></ul>
+            <h5>🟡 Yellow</h5><ul id="signals-irl-yellow"></ul>
+            <h5>🔴 Red</h5><ul id="signals-irl-red"></ul>
+          </div>
+          <div>
+            <h4>Virtual</h4>
+            <h5>⚪ Baseline</h5><ul id="signals-vir-baseline"></ul>
+            <h5>🟢 Green</h5><ul id="signals-vir-green"></ul>
+            <h5>🟡 Yellow</h5><ul id="signals-vir-yellow"></ul>
+            <h5>🔴 Red</h5><ul id="signals-vir-red"></ul>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- SAVED -->
+    <section id="saved" class="tab">
+      <article class="doc">
+        <h2>Saved Plans</h2>
+        <div id="savedListPage"></div>
+      </article>
+    </section>
+  </main>
+
+  <dialog id="savedDialog">
+    <h3>Saved Plans</h3>
+    <div id="savedList"></div>
+    <div class="dialog-actions">
+      <button id="closeSaved">Close</button>
+      <button id="clearSaved">Clear All</button>
+    </div>
+  </dialog>
+
+  <footer class="foot"><span class="dim">Personal use only. Respect &amp; consent first.</span></footer>
+
+  <script type="module" src="src/app.js"></script>
+  <script type="module" src="src/components/intro.js"></script>
+</body>
+</html>
